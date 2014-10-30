@@ -14,7 +14,9 @@ public class TwitMapAsyncServlet extends TwitMap {
 
 	@Override
 	public void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {	
-	    
+	    if (getTweets == null) {
+	    	getTweets = new TweetGet();
+	    }
 		res.setContentType("text/event-stream");
 	    res.setCharacterEncoding("UTF-8");	
 	    String keyword = req.getParameter("msg");

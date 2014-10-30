@@ -11,7 +11,6 @@ public class TwitMap  extends HttpServlet {
 	protected TweetGet getTweets;
 
 	public void init() {
-		getTweets = new TweetGet();
 		message = "Hello!";
 	}
 
