@@ -81,7 +81,7 @@ public class DataBaseHelper {
   public List<String> getLocations() {
     Statement statement = null;
     ResultSet rs = null;
-    String sqlStatement = "SELECT location FROM "+tablename;
+    String sqlStatement = "SELECT distict(location) FROM "+tablename;
     List<String> locations = new ArrayList<String>();
     try {
       statement = connection.createStatement();

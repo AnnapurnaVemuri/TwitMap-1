@@ -36,7 +36,7 @@ public class TwitMapAsyncServlet extends TwitMap {
     List<String> locations = getTweets.getLocationsFromDB();
     String locationList="";
     for (String location: locations) {
-      locationList+=location;
+      locationList+="||"+location;
     }
     writer.write("data: "+locationList+" \n\n");
   }
