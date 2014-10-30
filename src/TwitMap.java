@@ -21,9 +21,9 @@ public class TwitMap  extends HttpServlet {
 	  public void doGet(HttpServletRequest request, HttpServletResponse response)
 	      throws ServletException, IOException {
 	
-	    getTweets = new TweetGet();
-	    message = "Hello!";
-	    
+	
+
+		  
 	    response.setContentType("application/json");
 	
 	    // Actual logic goes here.
