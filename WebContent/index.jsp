@@ -2,6 +2,7 @@
 <head><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script></head>
   <body>
     <script>
+    var map, pointarry, heatmap, latlongList;
 	/*var shouldExit = false;
     var geoCodeRequestCompleteFlag = 0;
     	function getLocationLatLong(location) {
@@ -77,7 +78,7 @@
         	var locations = event.data;
         	//locations = "Hyderabad||GET BAD||Bangalore||New York||Philadelphia||Connecticut||Shangai||BREAKING BAD||London||Hyderabad||Stamford||Manhattan||San Diego"
         	var location = locations.split("||");
-			var latlongList = [];
+			latlongList = [];
 			location.forEach(function(l) {
 				if (l == undefined || l.length == 0) {
 					return;
@@ -94,7 +95,7 @@
 				    mapTypeId: google.maps.MapTypeId.SATELLITE
 				  };
 
-				var  map = new google.maps.Map(document.getElementById('map'),
+			map = new google.maps.Map(document.getElementById('map'),
 				      mapOptions);
         	/*var geocoder = new google.maps.Geocoder();
         	
@@ -116,9 +117,9 @@
 			});*/
 
 
-				  var pointArray = new google.maps.MVCArray(latlongList);
+				  pointArray = new google.maps.MVCArray(latlongList);
 
-				  var heatmap = new google.maps.visualization.HeatmapLayer({
+				  heatmap = new google.maps.visualization.HeatmapLayer({
 				    data: pointArray
 				  });
 
