@@ -31,11 +31,12 @@ public final class TweetGet {
       @Override
       public void onStatus(Status status) {
         String username = status.getUser().getScreenName();
-        String profileLocation = status.getUser().getLocation();
         long tweetId = status.getId();
         String content = status.getText();
+        double latitude = status.getGeoLocation().getLatitude();
+        double longitude = status.getGeoLocation().getLongitude();
         TwitterStatus newStatus = new TwitterStatus(username, tweetId,
-            profileLocation, content);
+            latitude, longitude, content);
         twitterStatusList.add(newStatus);
         if (twitterStatusList.size() == 10) {
           updateDB();
@@ -79,7 +80,7 @@ public final class TweetGet {
     System.out.println("Update successful");
   }
 
-  public List<String> getLocationsFromDB() {
-    return helper.getLocations();
+  public List<LatLong> getLocationsFromDB(String keyword) {
+    return helper.getLocations(keyword);
   }
 }

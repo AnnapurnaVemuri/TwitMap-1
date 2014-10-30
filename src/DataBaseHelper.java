@@ -5,7 +5,7 @@ import java.util.List;
 public class DataBaseHelper {
   private String jdbcUrl;
   private Connection connection;
-  private String tablename = "TwitterFeed";
+  private String tablename = "TwitterFeed2";
 
   public DataBaseHelper() {
     init();
@@ -43,13 +43,14 @@ public class DataBaseHelper {
     PreparedStatement statement = null;
     try {
       checkAndCreateTable();
-      String insertStatement = "INSERT INTO " + tablename + " VALUES(?,?,?,?)";
+      String insertStatement = "INSERT INTO " + tablename + " VALUES(?,?,?,?,?)";
       statement = connection.prepareStatement(insertStatement);
       for (TwitterStatus status : twitterStatusList) {
         statement.setString(1, status.getUserName());
         statement.setLong(2, status.getTweetId());
-        statement.setString(3, status.getLocation());
-        statement.setString(4, status.getContent());
+        statement.setDouble(3, status.getLatitude());
+        statement.setDouble(4, status.getLongitude());
+        statement.setString(5, status.getContent());
         statement.addBatch();
       }
      
@@ -72,22 +73,28 @@ public class DataBaseHelper {
 
   private void checkAndCreateTable() throws SQLException {
     String sqlStatement = "CREATE TABLE IF NOT EXISTS "  + tablename +
-        "(username VARCHAR(100), tweetID BIGINT, location VARCHAR(100), " +
+        "(username VARCHAR(100), tweetID BIGINT, latitude DOUBLE, longitude DOUBLE" +
         "content VARCHAR(500))";
     Statement stmt = connection.createStatement();
     stmt.executeUpdate(sqlStatement);
   }
 
-  public List<String> getLocations() {
+  public List<LatLong> getLocations(String keyword) {
     Statement statement = null;
     ResultSet rs = null;
-    String sqlStatement = "SELECT distict(location) FROM "+tablename;
-    List<String> locations = new ArrayList<String>();
+    String sqlStatement;
+    if (keyword.compareToIgnoreCase("All") == 0) {
+    	sqlStatement = "SELECT distinct(latitude, longitude) FROM "+tablename;
+    } else {
+    	sqlStatement = "SELECT distinct(latitude, longitude) FROM "+tablename+" WHERE content LIKE '%"+ keyword +"%'";
+    }
+    List<LatLong> locations = new ArrayList<LatLong>();
     try {
       statement = connection.createStatement();
       rs = statement.executeQuery(sqlStatement);
       while (rs.next()) {
-        locations.add(rs.getString("location"));
+    	  LatLong newLatlong = new LatLong(rs.getDouble("latitude"), rs.getDouble("longitude"));
+    	  locations.add(newLatlong);
       }
     } catch (SQLException e) {
       e.printStackTrace();

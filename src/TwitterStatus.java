@@ -2,14 +2,16 @@
  * Created by annapurna on 10/29/14.
  */
 public class TwitterStatus {
-  String userName, location, content;
+  String userName, content;
   long tweetId;
-
-  public TwitterStatus(String userName, long tweetId, String location,
+  double latitude, longitude;
+  
+  public TwitterStatus(String userName, long tweetId, double latitude, double longtitude,
                        String content) {
     this.userName = userName;
     this.tweetId = tweetId;
-    this.location = location;
+    this.longitude = longitude;
+    this.latitude = latitude;
     this.content = content;
   }
 
@@ -20,10 +22,14 @@ public class TwitterStatus {
   public String getUserName() {
     return userName;
   }
-
-  public String getLocation() {
-    return location;
-  }
+  
+  public double getLatitude() {
+	    return latitude;
+	  }
+  
+  public double getLongitude() {
+	    return longitude;
+	  }
 
   public String getContent() {
     return content;

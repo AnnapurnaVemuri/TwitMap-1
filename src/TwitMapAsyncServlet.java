@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(urlPatterns={"/twitmapsse"})
@@ -16,27 +15,17 @@ public class TwitMapAsyncServlet extends TwitMap {
 	@Override
   public void doGet(HttpServletRequest req, HttpServletResponse res) throws
       IOException, ServletException {
-		 getTweets = new TweetGet();
-		//    message = "Hello!";
-    List<TwitterStatus> dummyList = new ArrayList<TwitterStatus>();
- /*   dummyList.add(new TwitterStatus("abc",123, "Hyderabad", "yyyy"));
-    dummyList.add(new TwitterStatus("abc",456, "Bangalore", "yyyy"));
-    dummyList.add(new TwitterStatus("abc",789, "Chennai", "yyyy"));
-    dummyList.add(new TwitterStatus("abc",1011, "Indore", "yyyy"));
-    dummyList.add(new TwitterStatus("abc",1213, "Delhi", "yyyy"));
-    getTweets.helper.batchInsert(dummyList);
-*/
     res.setContentType("text/event-stream");
     res.setCharacterEncoding("UTF-8");
 
-    String msg = req.getParameter("msg");
+    String keyword = req.getParameter("msg");
 
     PrintWriter writer = res.getWriter();
     
-    List<String> locations = getTweets.getLocationsFromDB();
+    List<LatLong> locations = getTweets.getLocationsFromDB(keyword);
     String locationList="";
-    for (String location: locations) {
-      locationList+="||"+location;
+    for (LatLong location: locations) {
+      locationList+="||"+location.toString();
     }
     writer.write("data: "+locationList+" \n\n");
   }
