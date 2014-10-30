@@ -57,16 +57,10 @@
         		}
         	return false;
         }
-     	
-     	$( window ).unload(function() {
-     		$.get('closetwit', function() {
-     			console.log("Closing");
-     		});
-     	});
 </script>
 
     <h2>Tweet Map Demo</h2>
-    <div>
+    <div>																						
     	<select id="keyWordSelect">
 		  <option value="all">All</option>
 		  <option value="bad">Bad</option>

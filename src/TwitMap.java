@@ -20,8 +20,4 @@ public class TwitMap  extends HttpServlet {
 	    PrintWriter out = response.getWriter();
 	    out.println(message);
 	}
-
-	public void destroy() {
-		// do nothing.
-	}
 }
