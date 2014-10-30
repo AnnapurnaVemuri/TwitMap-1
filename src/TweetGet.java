@@ -6,6 +6,7 @@ import java.util.List;
 public final class TweetGet {
   private List<TwitterStatus> twitterStatusList = new
       ArrayList<TwitterStatus>();
+  private TwitterStream twitterStream;
   public static final DataBaseHelper helper = new DataBaseHelper();
 
   public TweetGet() {
@@ -14,13 +15,13 @@ public final class TweetGet {
 
   private void getTweets() {
     ConfigurationBuilder cb = new ConfigurationBuilder();
+    cb.setDebugEnabled(true)
+    	.setOAuthConsumerKey("KZI4MpW52dWinfzjXlKfTrzKN")
+        .setOAuthConsumerSecret("ZzGjkXws3Bp2wzCd7mFqzlE6GK0HXhwi4Xfm8o7Px8auVDFJgD")
+        .setOAuthAccessToken("2848198209-fwp23E0HONFs0iQpGJt8ABPk8HM5J3XX8NrhaHS")
+        .setOAuthAccessTokenSecret("97BANAvxYHf4j7tFSW9t24i91d2zrVrXVnYrqd6XUxoB9");
     
-     cb.setDebugEnabled(true)
-           .setOAuthConsumerKey("KZI4MpW52dWinfzjXlKfTrzKN")
-           .setOAuthConsumerSecret("ZzGjkXws3Bp2wzCd7mFqzlE6GK0HXhwi4Xfm8o7Px8auVDFJgD")
-           .setOAuthAccessToken("2848198209-fwp23E0HONFs0iQpGJt8ABPk8HM5J3XX8NrhaHS")
-           .setOAuthAccessTokenSecret("97BANAvxYHf4j7tFSW9t24i91d2zrVrXVnYrqd6XUxoB9");
-    TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
+    twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
     StatusListener listener = new StatusListener() {
       @Override
       public void onStatus(Status status) {
@@ -78,5 +79,11 @@ public final class TweetGet {
 
   public List<LatLong> getLocationsFromDB(String keyword) {
     return helper.getLocations(keyword);
+  }
+
+  public void destroyTwitterSample() {
+	if (twitterStream != null) {
+	  twitterStream.shutdown();
+	}
   }
 }

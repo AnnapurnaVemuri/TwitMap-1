@@ -11,6 +11,7 @@ public class TwitMap  extends HttpServlet {
 	protected TweetGet getTweets;
 
 	public void init() {
+		getTweets = new TweetGet();
 		message = "Hello!";
 	}
 
@@ -21,6 +22,6 @@ public class TwitMap  extends HttpServlet {
 	}
 
 	public void destroy() {
-		// do nothing.
+		getTweets.destroyTwitterSample();	
 	}
 }
