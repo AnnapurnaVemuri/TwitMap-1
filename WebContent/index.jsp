@@ -79,6 +79,14 @@
         	//locations = "Hyderabad||GET BAD||Bangalore||New York||Philadelphia||Connecticut||Shangai||BREAKING BAD||London||Hyderabad||Stamford||Manhattan||San Diego"
         	var location = locations.split("||");
 			latlongList = [];
+
+			var mapOptions = {
+				    zoom: 8,
+				    mapTypeId: google.maps.MapTypeId.TERRAIN
+				  };
+
+			map = new google.maps.Map(document.getElementById('map'),
+				      mapOptions);
 			location.forEach(function(l) {
 				if (l == undefined || l.length == 0) {
 					return;
@@ -89,14 +97,11 @@
 				}
 				var latlng = new google.maps.LatLng(latLong[0], latLong[1]);
 				latlongList.push(latlng);
+				new google.maps.Marker({
+					position : latlng,
+					map : map
+				});
 			});
-			var mapOptions = {
-				    zoom: 8,
-				    mapTypeId: google.maps.MapTypeId.SATELLITE
-				  };
-
-			map = new google.maps.Map(document.getElementById('map'),
-				      mapOptions);
         	/*var geocoder = new google.maps.Geocoder();
         	
 			location.forEach(function(address) {
@@ -117,13 +122,13 @@
 			});*/
 
 
-				  pointArray = new google.maps.MVCArray(latlongList);
+				  /*pointArray = new google.maps.MVCArray(latlongList);
 
 				  heatmap = new google.maps.visualization.HeatmapLayer({
 				    data: pointArray
 				  });
 
-				  heatmap.setMap(map);
+				  heatmap.setMap(map);*/
           };
         } else {
           output.innerHTML = "Sorry, Server-Sent Event is not supported in your browser";
