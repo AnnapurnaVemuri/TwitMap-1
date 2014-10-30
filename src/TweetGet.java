@@ -33,6 +33,8 @@ public final class TweetGet {
         String username = status.getUser().getScreenName();
         long tweetId = status.getId();
         String content = status.getText();
+        if(status.getGeoLocation()==null)
+        	return;
         double latitude = status.getGeoLocation().getLatitude();
         double longitude = status.getGeoLocation().getLongitude();
         TwitterStatus newStatus = new TwitterStatus(username, tweetId,

@@ -70,7 +70,7 @@
 				  
         if (typeof(EventSource) !== "undefined") {
           var elt = document.getElementById("keyWordSelect");
-          var msg = options[elt.selectedIndex].text;
+          var msg = elt.options[elt.selectedIndex].text;
           console.log(msg);
           var source = new EventSource("twitmapsse?msg=" + msg);
           source.onmessage = function(event) {
@@ -79,7 +79,13 @@
         	var location = locations.split("||");
 			var latlongList = [];
 			location.forEach(function(l) {
+				if (l == undefined || l.length == 0) {
+					return;
+				}
 				var latLong = l.split(",");
+				if (latLong.length != 2) {
+					return;
+				}
 				var latlng = new google.maps.LatLng(latLong[0], latLong[1]);
 				latlongList.push(latlng);
 			});

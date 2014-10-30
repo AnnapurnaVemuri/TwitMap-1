@@ -18,6 +18,7 @@ public class DataBaseHelper {
       connection = DriverManager.getConnection(jdbcUrl);
       connection.setAutoCommit(false);
       System.out.println("Connected to DB");
+      checkAndCreateTable();
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -37,12 +38,13 @@ public class DataBaseHelper {
     jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
         "?user=" + userName + "&password=" + password;
     System.out.println("JDBC URL to connect to :" + jdbcUrl);
+    
   }
 
   public boolean batchInsert(List<TwitterStatus> twitterStatusList) {
     PreparedStatement statement = null;
     try {
-      checkAndCreateTable();
+      
       String insertStatement = "INSERT INTO " + tablename + " VALUES(?,?,?,?,?)";
       statement = connection.prepareStatement(insertStatement);
       for (TwitterStatus status : twitterStatusList) {
@@ -73,7 +75,7 @@ public class DataBaseHelper {
 
   private void checkAndCreateTable() throws SQLException {
     String sqlStatement = "CREATE TABLE IF NOT EXISTS "  + tablename +
-        "(username VARCHAR(100), tweetID BIGINT, latitude DOUBLE, longitude DOUBLE" +
+        "(username VARCHAR(100), tweetID BIGINT, latitude DOUBLE, longitude DOUBLE," +
         "content VARCHAR(500))";
     Statement stmt = connection.createStatement();
     stmt.executeUpdate(sqlStatement);
@@ -84,9 +86,9 @@ public class DataBaseHelper {
     ResultSet rs = null;
     String sqlStatement;
     if (keyword.compareToIgnoreCase("All") == 0) {
-    	sqlStatement = "SELECT distinct(latitude, longitude) FROM "+tablename;
+    	sqlStatement = "SELECT latitude, longitude FROM "+tablename+" group by latitude, longitude ";
     } else {
-    	sqlStatement = "SELECT distinct(latitude, longitude) FROM "+tablename+" WHERE content LIKE '%"+ keyword +"%'";
+    	sqlStatement = "SELECT latitude, longitude FROM "+tablename+" WHERE content LIKE '%"+ keyword +"%' group by latitude, longitude ";
     }
     List<LatLong> locations = new ArrayList<LatLong>();
     try {

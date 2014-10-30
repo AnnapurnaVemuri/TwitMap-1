@@ -1,12 +1,9 @@
-/**
- * Created by annapurna on 10/29/14.
- */
 public class TwitterStatus {
   String userName, content;
   long tweetId;
   double latitude, longitude;
   
-  public TwitterStatus(String userName, long tweetId, double latitude, double longtitude,
+  public TwitterStatus(String userName, long tweetId, double latitude, double longitude,
                        String content) {
     this.userName = userName;
     this.tweetId = tweetId;

@@ -13,19 +13,26 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 6 [1.6.0_65-b14-462]"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.33/mysql-connector-java-5.1.33-bin.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/twitter-api/twitter4j-async-4.0.2.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/twitter-api/twitter4j-core-4.0.2.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/twitter-api/twitter4j-examples-4.0.2.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/twitter-api/twitter4j-media-support-4.0.2.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/twitter-api/twitter4j-stream-4.0.2.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/javax.servlet-3.0.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.33/src/lib/c3p0-0.9.1-pre6.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.33/src/lib/c3p0-0.9.1-pre6.src.zip"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.33/src/lib/jboss-common-jdbc-wrapper-src.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.33/src/lib/jboss-common-jdbc-wrapper.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.33/src/lib/slf4j-api-1.6.1.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/c3p0-0.9.1-pre6.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/c3p0-0.9.1-pre6.src.zip"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/commons-io-2.4.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/commons-io-2.4-javadoc.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/commons-io-2.4-sources.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/commons-io-2.4-tests.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/commons-io-2.4-test-sources.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/jackson-all-1.7.3.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/jackson-all-1.7.3.jar.zip"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/jboss-common-jdbc-wrapper.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/jboss-common-jdbc-wrapper-src.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/mysql-connector-java-5.1.33-bin.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/org.apache.commons.io-2.4.jar.zip"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/slf4j-api-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/twitter4j-async-4.0.2.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/twitter4j-core-4.0.2.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/twitter4j-examples-4.0.2.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/twitter4j-media-support-4.0.2.jar"/>
+	<classpathentry kind="lib" path="/home/sowmya/workspace/TwitMap/WebContent/WEB-INF/lib/twitter4j-stream-4.0.2.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="lib" path="/home/sowmya/Downloads/apache-tomcat-7.0.56/lib/servlet-api.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
