@@ -22,6 +22,6 @@ public class TwitMap  extends HttpServlet {
 	}
 
 	public void destroy() {
-		getTweets.destroyTwitterSample();	
+		// do nothing.
 	}
 }

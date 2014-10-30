@@ -57,7 +57,13 @@
         		}
         	return false;
         }
-	</script>
+     	
+     	$( window ).unload(function() {
+     		$.get('closetwit', function() {
+     			console.log("Closing");
+     		});
+     	});
+</script>
 
     <h2>Tweet Map Demo</h2>
     <div>
