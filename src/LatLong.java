@@ -1,7 +1,5 @@
 
 public class LatLong {
-	
-
 	private double latitude, longitude;
 	
 	public LatLong(double latitude, double longitude) {

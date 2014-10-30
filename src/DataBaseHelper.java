@@ -38,13 +38,11 @@ public class DataBaseHelper {
     jdbcUrl = "jdbc:mysql://" + hostname + ":" + port + "/" + dbName +
         "?user=" + userName + "&password=" + password;
     System.out.println("JDBC URL to connect to :" + jdbcUrl);
-    
   }
 
   public boolean batchInsert(List<TwitterStatus> twitterStatusList) {
     PreparedStatement statement = null;
-    try {
-      
+    try {  
       String insertStatement = "INSERT INTO " + tablename + " VALUES(?,?,?,?,?)";
       statement = connection.prepareStatement(insertStatement);
       for (TwitterStatus status : twitterStatusList) {
@@ -55,7 +53,6 @@ public class DataBaseHelper {
         statement.setString(5, status.getContent());
         statement.addBatch();
       }
-     
       statement.executeBatch();
       connection.commit();
     } catch (SQLException e) {
@@ -118,5 +115,4 @@ public class DataBaseHelper {
     }
     return locations;
   }
-
 }

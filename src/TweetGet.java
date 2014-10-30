@@ -9,7 +9,7 @@ public final class TweetGet {
   public static final DataBaseHelper helper = new DataBaseHelper();
 
   public TweetGet() {
-    getTweets();
+    //getTweets();
   }
 
   private void getTweets() {
@@ -20,12 +20,6 @@ public final class TweetGet {
            .setOAuthConsumerSecret("ZzGjkXws3Bp2wzCd7mFqzlE6GK0HXhwi4Xfm8o7Px8auVDFJgD")
            .setOAuthAccessToken("2848198209-fwp23E0HONFs0iQpGJt8ABPk8HM5J3XX8NrhaHS")
            .setOAuthAccessTokenSecret("97BANAvxYHf4j7tFSW9t24i91d2zrVrXVnYrqd6XUxoB9");
-         
-       /* .setOAuthConsumerKey("o7pdF4Z2Ip9jgWOYPdvcdCSrN")
-        .setOAuthConsumerSecret("vpqKS8MoJiiuGz9hjI0d6VXdnc8MLwMvUEmhxlsFWp3CLkWKuG")
-        .setOAuthAccessToken("2850527037-T3nmJhuNAQixoEdbaFLQIzdCivDG4aAnG2WPheT")
-        .setOAuthAccessTokenSecret("JsoGCmBJzOT0RkgRQMewZS7JuETeJaDz9LtqAUGyxpxin");
-*/
     TwitterStream twitterStream = new TwitterStreamFactory(cb.build()).getInstance();
     StatusListener listener = new StatusListener() {
       @Override

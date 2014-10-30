@@ -5,34 +5,23 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-/**
- * Created by annapurna on 10/29/14.
- */
 public class TwitMap  extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private String message;
 	protected TweetGet getTweets;
 
 	public void init() {
-		 getTweets = new TweetGet();
-	    message = "Hello!";
+		getTweets = new TweetGet();
+		message = "Hello!";
 	}
 
-	  public void doGet(HttpServletRequest request, HttpServletResponse response)
-	      throws ServletException, IOException {
-	
-	
-
-		  
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	  
 	    response.setContentType("application/json");
-	
-	    // Actual logic goes here.
 	    PrintWriter out = response.getWriter();
 	    out.println(message);
-	  }
+	}
 
-  public void destroy() {
-    // do nothing.
-  }
-
+	public void destroy() {
+		// do nothing.
+	}
 }

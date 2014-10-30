@@ -1,207 +1,63 @@
 <html>
-<head><script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script><script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script></head>
-  <body>
-    <script>
-//    var map, pointarry, heatmap, latlongList;
-	/*var shouldExit = false;
-    var geoCodeRequestCompleteFlag = 0;
-    	function getLocationLatLong(location) {
-    		var locationlength = location.length;
-    		var latlongList = [];
-        	var geocoder = new google.maps.Geocoder();
-        	var gotResponse = 0;
-			location.forEach(function(address) {
-				$.getJSON(
-						'http://maps.googleapis.com/maps/api/geocode/json?address='
-								+ address + '&sensor=false', null, function(
-								data) {
-							if (data.results[0] != undefined) {
-								var p = data.results[0].geometry.location;
-								var latlng = new google.maps.LatLng(p.lat, p.lng);
-								latlongList.push(latlng);
-							}
-
-						});
-				geocoder.geocode({
-		        	   'address': address
-		        	}, function(results, status) {
-		        		gotResponse++;
-		        	   if(status == google.maps.GeocoderStatus.OK) {
-		        		   var p = results[0].geometry.location;
-							var latlng = new google.maps.LatLng(p.lat(), p.lng());
-							latlongList.push(latlng);
-							geoCodeRequestCompleteFlag++;
-		        	        //if (latlongList.length == locationlength) {
-		        	        	//geoCodeRequestCompleteFlag = 1;
-		        	        //}
-		        	   }
-		        	});
-			});
-			setTimeout(function() {alert(shouldExit);document.shouldExit = true;}, 10000);
-			while( gotResponse != locationlength && document.shouldExit == false ) {
-			    // wait
-			}
-			return latlongList;
-    	}*/
-    	
-    		function setupEventSource2() {
-    	        var output = document.getElementById("output2");
-    	        if (typeof(EventSource) !== "undefined") {
-    	          var msg = 'hi';
-    	          var source = new EventSource("twitmapsse?msg=" + msg);
-    	          source.onmessage = function(event) {
-    	            output.innerHTML += event.data + "<br>";
-    	          };
-    	        } else {
-    	          output.innerHTML = "Sorry, Server-Sent Event is not supported in your browser";
-    	        }
-    	        return false;
-    	      }
-    	
-      function setupEventSource() {
-        var output = document.getElementById("output");
-        /*var locations = "Hyderabad||GET BAD||Bangalore||New York||Philadelphia||Connecticut||Shangai||BREAKING BAD||London||Hyderabad||Stamford||Manhattan||San Diego"
-        	var location = locations.split("||");
-        geoCodeRequestCompleteFlag = 0;
-        document.shouldExit = false;
-			var latlongList = getLocationLatLong(location);
-
-
-			  //var pointArray = new google.maps.MVCArray(latlongList);
-
-			var mapOptions = {
-				    zoom: 8,
-				    mapTypeId: google.maps.MapTypeId.SATELLITE
-				  };
-
-				var  map = new google.maps.Map(document.getElementById('map'),
-				      mapOptions);
-
-
-				  var heatmap = new google.maps.visualization.HeatmapLayer({
-				    data: latlongList
-				  });
-
-				  heatmap.setMap(map);*/
-    			  
-        if (typeof(EventSource) !== "undefined") {
-        	/* var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
-			  var mapOptions = {
-			    zoom: 4,
-			    center: myLatlng
-			  }
-			  var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-			  var marker = new google.maps.Marker({
-			      position: myLatlng,
-			      map: map,
-			      title: 'Hello World!'
-			  });
- */
-			            var elt = document.getElementById("keyWordSelect");
-          var msg = elt.options[elt.selectedIndex].text;
-          console.log(msg);
-          var source = new EventSource("twitmapsse?msg=" + msg);
-          source.onmessage = function(event) {
-
-/*             	  var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
-    			  var mapOptions = {
-    			    zoom: 4,
-    			    center: myLatlng
-    			  }
-    			  var map = new google.maps.Map(document.getElementById('map'), mapOptions);
-
-    			  var marker = new google.maps.Marker({
-    			      position: myLatlng,
-    			      map: map,
-    			      title: 'Hello World!'
-    			  });
- 
- */
-  var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
- 	        	var locations = event.data;
-    	        	//locations = "Hyderabad||GET BAD||Bangalore||New York||Philadelphia||Connecticut||Shangai||BREAKING BAD||London||Hyderabad||Stamford||Manhattan||San Diego"
-    	        	var location = locations.split(" ");
-    				latlongList = [];
-    				var mapOptions = {
-    	    			    zoom: 2,
+	<head>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+	</head>
+	<body>
+    	<script>
+     		function setupEventSource() {
+        		var output = document.getElementById("output");
+        		if (typeof(EventSource) !== "undefined") {
+          			var elt = document.getElementById("keyWordSelect");
+          			var msg = elt.options[elt.selectedIndex].text;
+          			var source = new EventSource("twitmapsse?msg=" + msg);
+          			source.onmessage = function(event) {
+  						var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+ 	        			var locations = event.data;
+    	        		var location = locations.split(" ");
+    					latlongList = [];
+    					
+    					var mapOptions = {
+    	    				zoom: 2,
    							center:myLatlng,
    							mapTypeId: google.maps.MapTypeId.SATELLITE
-   							
-    	    			  }
-    				
-    				var mapOptions2 = {
+    	    			}
+    					var mapOptions2 = {
     	    			    zoom: 2,
    							center:myLatlng,
-   							mapTypeId: google.maps.MapTypeId.TERRAIN
-   							
-    	    			  }
-
-    				var map = new google.maps.Map(document.getElementById('map'),
-    					      mapOptions);
-    				var map2 = new google.maps.Map(document.getElementById('map2'),
-  					      mapOptions);
+   							mapTypeId: google.maps.MapTypeId.TERRAIN		
+    	    			}
+    					var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    					var map2 = new google.maps.Map(document.getElementById('map2'), mapOptions);
+    		
+    					location.forEach(function(l) {
+    						if (l == undefined || l.length == 0) {
+    							return;
+    						}
+    						var latLong = l.split(",");
+    						if (latLong.length != 2) {
+    							return;
+    						}
+    						var latlng = new google.maps.LatLng(latLong[0],latLong[1] );
+    						latlongList.push(latlng);
+    			 			new google.maps.Marker({
+    							position : latlng,
+    							map : map2
+    						}); 
+    			 		});
     				
-    				location.forEach(function(l) {
-    					//var l='-25.363882,131.044922';
-    					if (l == undefined || l.length == 0) {
-    						return;
-    					}
-    					var latLong = l.split(",");
-    					if (latLong.length != 2) {
-    						return;
-    					}
-    					var latlng = new google.maps.LatLng(latLong[0],latLong[1] );
-    					latlongList.push(latlng);
-    			 		new google.maps.Marker({
-    						position : latlng,
-    						map : map2
-    					}); 
-    			 	});
-    				
-    				var pointArray = new google.maps.MVCArray(latlongList);
-
-  				  var heatmap = new google.maps.visualization.HeatmapLayer({
-  				    data: pointArray
-  				  });
-
-  				  heatmap.setMap(map);
-
-  				  
-        	/*var geocoder = new google.maps.Geocoder();
-        	
-			location.forEach(function(address) {
-				geocoder.geocode({
-		        	   'address': address
-		        	}, function(results, status) {
-		        	   if(status == google.maps.GeocoderStatus.OK) {
-		        		   var p = results[0].geometry.location;
-							var latlng = new google.maps.LatLng(p.lat, p.lng);
-							latlongList.push(latlng);
-		        	         new google.maps.Marker({
-		        	            position: results[0].geometry.location,
-		        	            map: map
-		        	         });
-		        	         map.setCenter(results[0].geometry.location);
-		        	   }
-		        	});
-			});*/
-
-
-				  /* pointArray = new google.maps.MVCArray(latlongList);
-
-				  heatmap = new google.maps.visualization.HeatmapLayer({
-				    data: pointArray
-				  });
-
-				  heatmap.setMap(map);
- */          }
-        } else {
-          output.innerHTML = "Sorry, Server-Sent Event is not supported in your browser";
+    					var pointArray = new google.maps.MVCArray(latlongList);
+						var heatmap = new google.maps.visualization.HeatmapLayer({
+  				    		data: pointArray
+  				  		});
+  				  		heatmap.setMap(map);
+		  			}
+          		} else {
+          			output.innerHTML = "Sorry, Server-Sent Event is not supported in your browser";
+        		}
+        	return false;
         }
-        return false;
-      }
-    </script>
+	</script>
 
     <h2>Tweet Map Demo</h2>
     <div>
