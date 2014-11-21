@@ -10,7 +10,7 @@ public final class TweetGet {
   public static final DataBaseHelper helper = new DataBaseHelper();
 
   public TweetGet() {
-    //getTweets();
+    getTweets();
   }
 
   private void getTweets() {
