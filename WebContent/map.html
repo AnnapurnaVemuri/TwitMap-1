@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">
+<title>LiveTweetMap</title>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=visualization"></script>
+<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="d3.js"></script>
+<script src="d3.layout.cloud.js"></script>
+<style type="text/css">
+    .bs-example{
+    	margin: 20px;
+    }
+    .show {
+    	display: block;
+    }
+    
+    .hide {
+    	display: none;
+    }
+</style>
+    <script type="text/javascript">
+	var keyword = 'all';
+	var globalData = [];
+	var fullData = [];
+	var markers = [];
+	var heatmap1, heatmap2;
+ 	var myLatlng = new google.maps.LatLng(-25.363882,131.044922);
+	var wordCount = new Object();
+ 	
+	var mapOptions = {
+		zoom: 1,
+			center:myLatlng,
+			mapTypeId: google.maps.MapTypeId.SATELLITE
+	}
+	var map, map2, map3;
+      google.maps.event.addDomListener(window, 'load', setupEventSource);   
+      
+      function loadTweetMarkers() {
+    	  if (!$("#tweetMarker").hasClass("active")) {
+        	  $("#tweetMarker").toggleClass("active");
+        	  $("#markerDiv").show();
+        	  google.maps.event.trigger( map, 'resize' )
+    	  }
+    	  if ($("#tweetHeat").hasClass("active")) {
+        	  $("#tweetHeat").toggleClass("active");
+        	  $("#heatDiv").hide();
+    	  }
+    	  if ($("#sentiHeat").hasClass("active")) {
+        	  $("#sentiHeat").toggleClass("active");
+        	  $("#sentiDiv").hide();
+    	  }
+    	  if ($("#wordCloud").hasClass("active")) {
+        	  $("#wordCloud").toggleClass("active");
+        	  $("#wordCloudDiv").hide();
+    	  }
+      }
+      
+      function appendMarkers(list) {
+    	  list.forEach(function(g) {
+				if (keyword.toLowerCase() == 'all' || g.category.toLowerCase() == keyword.toLowerCase()) {
+		    		  var marker = new google.maps.Marker({
+ 		  				position : g.location,
+		  				map : map
+		  			  });
+		    		  markers.push(marker);
+ 				}
+    	  });
+      }
+      
+      function loadHeatMapForAllTweets() {
+    	  if (!$("#tweetHeat").hasClass("active")) {
+        	  $("#tweetHeat").toggleClass("active");
+        	  $("#heatDiv").show();
+        	  google.maps.event.trigger( map2, 'resize' )
+    	  }
+    	  if ($("#tweetMarker").hasClass("active")) {
+        	  $("#tweetMarker").toggleClass("active");
+        	  $("#markerDiv").hide();
+    	  }
+    	  if ($("#sentiHeat").hasClass("active")) {
+        	  $("#sentiHeat").toggleClass("active");
+        	  $("#sentiDiv").hide();
+    	  }
+    	  if ($("#wordCloud").hasClass("active")) {
+        	  $("#wordCloud").toggleClass("active");
+        	  $("#wordCloudDiv").hide();
+    	  }
+      }
+      
+      function appendHeatMap(list) {
+    	  var latlongList = [];
+    	  list.forEach(function(g) {
+    		  if (keyword.toLowerCase() == 'all'|| g.category.toLowerCase() == keyword.toLowerCase()) {
+        		  latlongList.push(g.location);
+			}
+    	  });
+			
+			var pointArray = new google.maps.MVCArray(latlongList);
+			heatmap1 = new google.maps.visualization.HeatmapLayer({
+	    		data: pointArray
+	  		});
+	  		heatmap1.setMap(map2);
+      }
+      
+      function loadSentimentHeatMap() {
+    	  if (!$("#sentiHeat").hasClass("active")) {
+        	  $("#sentiHeat").toggleClass("active");
+        	  $("#sentiDiv").show();
+        	  google.maps.event.trigger( map3, 'resize' )
+    	  }
+    	  if ($("#tweetMarker").hasClass("active")) {
+        	  $("#tweetMarker").toggleClass("active");
+        	  $("#markerDiv").hide();
+    	  }
+    	  if ($("#tweetHeat").hasClass("active")) {
+        	  $("#tweetHeat").toggleClass("active");
+        	  $("#heatDiv").hide();
+    	  }
+    	  if ($("#wordCloud").hasClass("active")) {
+        	  $("#wordCloud").toggleClass("active");
+        	  $("#wordCloudDiv").hide();
+    	  }
+      }
+
+      function appendSentiHeatMap(list) {			
+
+    	  var latlongList = [];
+    	  list.forEach(function(g) {
+    		  if (keyword.toLowerCase() == 'all' || g.category.toLowerCase() == keyword.toLowerCase()) {
+        		  latlongList.push(g);
+ 			}
+    	  });
+    	  
+			var pointArray = new google.maps.MVCArray(latlongList);
+			heatmap2 = new google.maps.visualization.HeatmapLayer({
+	    		data: pointArray
+	  		});
+	  		heatmap2.setMap(map3);
+      }
+		
+		function LocationObj(lat, longi, wt, cat) {
+ 			this.lat = lat;
+			this.longi = longi;
+			this.wt = wt;
+			this.cat = cat;
+		}
+      
+		function keywordClick(filter) {
+			keyword = filter;
+			markers.forEach(function(m) {
+    	    	m.setMap(null);
+    	    });
+    	    heatmap1.setMap(null);
+    	    heatmap2.setMap(null);
+			appendMarkers(fullData);
+			appendHeatMap(fullData);
+			appendSentiHeatMap(fullData);
+			wordCloud();
+ 		}
+      function setupEventSource() {
+    		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);	
+  		map2 = new google.maps.Map(document.getElementById('map-canvas2'), mapOptions);
+  		map3 = new google.maps.Map(document.getElementById('map-canvas3'), mapOptions);
+  		if (typeof(EventSource) !== "undefined") {
+  				console.log("AAAA");
+    			var source = new EventSource("twitmapsse");
+    			console.log("Initialized event source");
+    			source.onmessage = function(event) {
+    				console.log("BBBB");
+    				globalData = [];
+    				//var snsMessagesList = "[]\n\n[{\"latitude\":40.535845,\"longitude\":-84.388108,\"category\":\"the\",\"weight\":0.121783},{\"latitude\":39.135546,\"longitude\":-76.621432,\"category\":\"apple\",\"weight\":-0.586476},{\"latitude\":52.150883,\"longitude\":-0.191151,\"category\":\"the\",\"weight\":-0.392669},{\"latitude\":-22.596533,\"longitude\":-47.425719,\"category\":\"love\"},{\"latitude\":6.761443,\"longitude\":3.413829,\"category\":\"the\",\"weight\":0.0},{\"latitude\":38.529391,\"longitude\":-89.96544,\"category\":\"the\",\"weight\":-0.929762},{\"latitude\":38.318257,\"longitude\":-85.703514,\"category\":\"the\",\"weight\":-0.488214},{\"latitude\":39.448959,\"longitude\":-87.421432,\"category\":\"lol\",\"weight\":-0.316197},{\"latitude\":39.448959,\"longitude\":-87.421432,\"category\":\"lol\",\"weight\":-0.316197},{\"latitude\":39.347816,\"longitude\":-76.750542,\"category\":\"the\",\"weight\":-0.282551}]";
+    				
+    				//console.log(event.data);
+    				console.log("ccccc");
+    				var snsMessagesList = event.data;
+    				var snsMessages = snsMessagesList.split("\n\n");
+    				var locations = [];
+    				snsMessages.forEach(function(msg) {
+    					console.log(msg);
+    					msgjson = JSON.parse(msg);
+    					msgjson.forEach(function(l) {
+							var obj = new LocationObj(l.latitude, l.longitude, l.weight + 1, l.category);
+ 							locations.push(obj);
+    					});
+    				});
+    				console.log(locations);
+    				locations.forEach(function(l) {
+    					var lObj = new Object();
+    					lObj.location = new google.maps.LatLng(l.lat, l.longi);
+    					lObj.weight = l.wt;
+    					lObj.category = l.cat;
+    					globalData.push(lObj);
+    				});
+    				globalData.forEach(function(g) {
+    					var c = wordCount[g.category];
+    					if (c == undefined) {
+    						c = 0;
+    					}
+    					wordCount[g.category] = c +1;
+    					fullData.push(g);
+    				});
+    				console.log(globalData);
+    				appendMarkers(globalData);
+    				appendHeatMap(globalData);
+    				appendSentiHeatMap(globalData);
+    				wordCloud();
+ 	  			}
+    		} else {
+    			output.innerHTML = "Sorry, Server-Sent Event is not supported in your browser";
+  		}
+  	return false;
+  }
+      var fillwords = ["The", "Bieber", "Modi", "Ebola", "Girl", "Love", "1989",
+                "Suarez", "Apple", "God", "Lol", "Boy", "Baby"];
+      
+      function addWordCloud() {
+    	  if ($("#tweetMarker").hasClass("active")) {
+        	  $("#tweetMarker").toggleClass("active");
+        	  $("#markerDiv").hide();
+    	  }
+    	  if ($("#tweetHeat").hasClass("active")) {
+        	  $("#tweetHeat").toggleClass("active");
+        	  $("#heatDiv").hide();
+    	  }
+    	  if ($("#sentiHeat").hasClass("active")) {
+        	  $("#sentiHeat").toggleClass("active");
+        	  $("#sentiDiv").hide();
+    	  }
+    	  if (!$("#wordCloud").hasClass("active")) {
+        	  $("#wordCloud").toggleClass("active");
+        	  $("#wordCloudDiv").show();
+    	  }
+    	  wordCloud();
+      }
+      var fill = d3.scale.category20();
+	  var cloudArr = [];
+      
+      function wordCloud() {
+    	  cloudArr = [];
+    	  var full = fullData.length;
+    	  fillwords.forEach(function (word) {
+    		  var w = word.toLowerCase();
+    		  var cObj = new Object();
+    		  cObj.text = w;
+    		  var s = 1;
+    		  if (wordCount[w] != undefined) {
+    			  s = wordCount[w] + 1;
+    		  }
+    		  cObj.size = s * 100 / full;
+    		  cloudArr.push(cObj);
+    	  });
+        d3.layout.cloud().size([750, 250])
+          .words(cloudArr)
+          .padding(5)
+          .rotate(function() { return (~~(Math.random() * 2) * 120)-60; })
+          .font("Impact")
+          .fontSize(function(d) { return d.size; })
+          .on("end", draw)
+          .start();
+      }
+    
+  function draw() {
+    d3.select("#wordCloudDiv").append("svg")
+        .attr("width", 750)
+        .attr("height", 500)
+      .append("g")
+        .attr("transform", "translate(375,250)")
+      .selectAll("text")
+        .data(cloudArr)
+      .enter().append("text")
+        .style("font-size", function(d) { return d.size + "px"; })
+        .style("font-family", "Impact")
+        .style("fill", function(d, i) { return fill(i); })
+        .attr("text-anchor", "middle")
+        .attr("transform", function(d) {
+          return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+        })
+        .text(function(d) { return d.text; });
+  }
+    </script>
+  </head>
+  <body>
+<div class="bs-example">
+    <nav role="navigation" class="navbar navbar-default">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="#" class="navbar-brand">Tweet Map</a>
+        </div>
+        <!-- Collection of nav links, forms, and other content for toggling -->
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li id="tweetMarker" class="active"><a href="javascript:void(0)" onClick="loadTweetMarkers()">Plot Tweets</a></li>
+                <li id="tweetHeat"><a href="javascript:void(0)" onClick="loadHeatMapForAllTweets()">Heat Map</a></li>
+                <li id="sentiHeat"><a href="javascript:void(0)" onClick="loadSentimentHeatMap()">Sentiment Heat Map</a></li>
+                <li id="wordCloud"><a href="javascript:void(0)" onClick="addWordCloud()">Word Cloud</a></li>
+                <li class="dropdown">
+                    <a data-toggle="dropdown" class="dropdown-toggle" >Keywords <b class="caret"></b></a>
+                    <ul id="keywordDrop" role="menu" class="dropdown-menu">
+                        <li><a href="#" onClick="keywordClick('All')">All</a></li>
+                        <li><a href="#" onClick="keywordClick('The')">The</a></li>
+                        <li><a href="#" onClick="keywordClick('Bieber')">Bieber</a></li>
+                        <li><a href="#" onClick="keywordClick('Modi')">Modi</a></li>
+                        <li><a href="#" onClick="keywordClick('Ebola')">Ebola</a></li>
+                        <li><a href="#" onClick="keywordClick('Girl')">Girl</a></li>
+                        <li><a href="#" onClick="keywordClick('Love')">Love</a></li>
+                        <li><a href="#" onClick="keywordClick('1989')">1989</a></li>
+                        <li><a href="#" onClick="keywordClick('Suarez')">Suarez</a></li>
+                        <li><a href="#" onClick="keywordClick('Apple')">Apple</a></li>
+                        <li><a href="#" onClick="keywordClick('God')">God</a></li>
+                        <li><a href="#" onClick="keywordClick('Lol')">Lol</a></li>
+                        <li><a href="#" onClick="keywordClick('Boy')">Boy</a></li>
+                        <li><a href="#" onClick="keywordClick('Baby')">Baby</a></li>
+                    </ul>
+                </li>
+            </ul>        
+        </div>
+    </nav>
+</div>
+<div class="container">
+	<div class = "row">
+		<div class="col-xs-6">
+ 			<div id="markerDiv"><div id="map-canvas" style="padding-left:50px; width: 1000px; height: 500px;"></div></div>	
+			<div id="heatDiv" style="display: none;"><div id="map-canvas2" style="padding-left:50px; width: 1000px; height: 500px;"></div></div>	
+			<div id="sentiDiv" style="display: none;"><div id="map-canvas3" style="padding-left:50px; width: 1000px; height: 500px;" ></div></div>	
+			<div id="wordCloudDiv" style="display: none;"></div>	
+		</div>
+		<div class="col-xs-6">
+		
+		</div>
+	</div>
+</div>			
+  </body>
+</html>

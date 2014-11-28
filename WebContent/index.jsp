@@ -80,6 +80,11 @@
     	<div id="map" style="width: 1000px; height: 500px; "></div>
     	<div id="map2" style="width: 1000px; height: 500px;"></div> 
     </div>
-    
+    <form action="twitmapsse" method="POST">
+First Name: <input type="text" name="first_name">
+<br />
+Last Name: <input type="text" name="last_name" />
+<input type="submit" value="Submit" />
+</form>
   </body>
 </html>
